@@ -1,23 +1,22 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Prediction from "./components/prediction";
 import Appbar from "./components/appbar";
-
 // react-fabric
-// import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
+import { initializeIcons } from "@uifabric/icons";
+initializeIcons();
 
 function App() {
   return (
     <div className="App">
       <header>
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <h2 className="App-title">Harvest Predition</h2>
+          <Appbar />
         </div>
       </header>
 
       <div className="App-body">
-        <Appbar />
         <Prediction />
       </div>
     </div>
