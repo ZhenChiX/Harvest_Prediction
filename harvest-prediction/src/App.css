@@ -1,18 +1,71 @@
 body {
-  background-color: #e5e9ef
+  background-color: #e5e9ef;
+  /* min-height: 90vh; */
 }
 
 .App {
+  width: 90vw;
+  height: 100vh;
+  margin: 0 auto;
   text-align: center;
+}
+
+.App-bar {
+  position: relative;
+  top: 30px;
+  z-index: 1024;
+  width: 100vw
+}
+
+.App-wrapper {
+  margin: 0 auto;
+  width: 100vw
+}
+
+.App-title {
+  color: white;
+  position: absolute;
+  margin: 0.5em;
+}
+
+.App-menu {
+  width: 200px;
+  font-size: 1.5em
+}
+
+/*PAGE LAYOUT */
+
+.App-layout {
+  display: grid;
+  grid-gap: 2em;
+  width: 70vw;
+  margin: 3em auto;
+  grid-template-columns: 1fr 3fr;
 }
 
 .container {
   background-color: white;
-  margin: 2em;
+  margin: 2em 2em auto;
   padding: 1em;
   box-sizing: border-box;
   border-top: solid rgba(0, 120, 212, 1) 1em;
   box-shadow: 2px 2px 5px 5px rgba(124, 124, 124, 0.3);
+}
+
+.prediction {
+  width: 320px;
+  /* height: 400px; */
+}
+
+.request {
+  position: relative;
+  width: 100%;
+  text-align: left;
+}
+
+.report {
+  position: relative;
+  grid-area: 2/1/2/5
 }
 
 .App-header {
@@ -24,24 +77,23 @@ body {
   z-index: 1000;
   width: 100vw;
   height: 50px;
-  /* background: #61dafb; */
 }
 
+/*PAGE LAYOUT */
+
 .App-logo {
-  position: relative;
+  /* position: relative; */
   animation: App-logo-spin infinite 20s linear;
   height: 5em;
   pointer-events: none;
-  z-index: 9999
+  z-index: 9999;
 }
 
 .App-body {
   position: relative;
   top: 5vh;
-  min-height: 100vh;
-  width: 70vw;
-  margin: 1em auto;
-  /* background-color: #e5e9ef */
+  /* width: 70vw; */
+  margin: 0em auto;
 }
 
 label {
@@ -68,11 +120,93 @@ label>input {
   color: #61dafb;
 }
 
+/* ARROW TOOLTIPS */
+
+.arrowBubble {
+  content: "";
+  position: absolute;
+  border: 2em solid transparent;
+  border-right: 2em solid rgba(255, 255, 255, 1);
+  left: -4em;
+  top: 3em;
+}
+
+.up {
+  border: 2em solid transparent;
+  border-bottom: 2em solid rgba(255, 255, 255, 1);
+  top: -4em;
+  left: 75%
+}
+
+/* ARROW TOOLTIPS */
+
+hr {
+  border: 1px solid rgb(221, 221, 221)
+}
+
+/* Prediction Table */
+
+.result-table {
+  display: table;
+}
+
+.result-row {
+  display: table-row;
+}
+
+.result-cell {
+  display: table-cell;
+  font-weight: bold;
+  padding: 1em;
+}
+
+/* Prediction Table */
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width:1024px) {
+  .App-layout {
+    display: grid;
+    width: 90vw;
+    grid-template-columns: 1fr;
+  }
+  .container {
+    width: 80vw;
+  }
+  .arrowBubble {
+    border: 2em solid transparent;
+    border-bottom: 2em solid rgba(255, 255, 255, 1);
+    top: -4em;
+    left: 25%
+  }
+  .report {
+    grid-area: 3/auto
+  }
+}
+
+@media (max-width:600px) {
+  .App {
+    width: 90vw;
+  }
+  .container {
+    width: 90vw;
+    margin: auto;
+  }
+  .App-bar {
+    position: fixed;
+    top: 95vh;
+    background-color: rgba(0, 40, 85, 1);
+    height: 4em;
+  }
+  .App-wrapper {
+    position: fixed;
+    bottom: 0vh;
   }
 }
