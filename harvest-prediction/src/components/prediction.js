@@ -47,17 +47,25 @@ const styles = {
 class Prediction extends Component {
   constructor(props) {
     super(props);
+    this.myRef = React.createRef();
     this.state = {
-      //   startDate: "",
-      //   endDate: "",
+      startDate: "",
+      endDate: "",
       zipcode: ""
     };
   }
+  scrollToMyRef = () => window.scrollTo(0, this.myRef.current.offsetTop);
+
   onChange = e => {
     // e.preventDefault();
     console.log(e.target.value);
     this.setState({ [e.target.name]: e.target.value });
     console.log(this.state);
+  };
+  fetchResult = e => {
+    e.preventDefault();
+    // this.refs.scrollIntoView();
+    this.scrollToMyRef();
   };
 
   render() {
@@ -116,13 +124,14 @@ class Prediction extends Component {
               </select>
               <span style={styles.inputSpan}>Select a ZIP Code</span>
             </fieldset>
-            <PrimaryButton>Predict</PrimaryButton>
+            <PrimaryButton onClick={this.fetchResult}>Predict</PrimaryButton>
           </form>
         </div>
 
         <div className="container request">
           <div className="arrowBubble left" />
           <h3>Request</h3>
+          <p>Calculation by the thermal unit formula and the R model</p>
           <hr />
           <div className="result-table">
             <div className="result-row">
@@ -140,13 +149,13 @@ class Prediction extends Component {
             <div className="result-row">
               <p className="result-cell">Cultivar:</p>
               <p className="result-cell" style={styles.resultP}>
-                XXXXX
+                Kerman
               </p>
             </div>
             <div className="result-row">
               <p className="result-cell">Model Selection:</p>
               <p className="result-cell" style={styles.resultP}>
-                XXXXX
+                Pistachio_Model_3
               </p>
             </div>
             <div className="result-row">
@@ -158,7 +167,7 @@ class Prediction extends Component {
           </div>
           <hr />
         </div>
-        <div className="container report">
+        <div ref={this.myRef} className="container report">
           <div className="arrowBubble up" />
 
           <h3>Report</h3>
