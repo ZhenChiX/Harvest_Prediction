@@ -1,36 +1,63 @@
+html {
+  scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4 {
+  font-family: "proxima-nova-b,serif"
+}
+
+p {
+  font-family: "proxima-nova-r,serif"
+}
+
 body {
   background-color: #e5e9ef;
-  /* min-height: 90vh; */
 }
 
 .App {
-  width: 90vw;
-  height: 100vh;
+  /* width: 90vw; */
   margin: 0 auto;
   text-align: center;
 }
 
 .App-bar {
-  position: relative;
-  top: 30px;
+  position: absolute;
+  top: 3em;
+  height: 2em;
   z-index: 1024;
-  width: 100vw
+  width: 100vw;
+  background-color: white;
+  box-shadow: 2px 2px 3px 3px rgba(124, 124, 124, 0.5);
 }
 
 .App-wrapper {
   margin: 0 auto;
-  width: 100vw
 }
 
 .App-title {
   color: white;
   position: absolute;
-  margin: 0.5em;
+  margin: 0.5em auto;
 }
 
-.App-menu {
+.App-menu_list {
+  display: inline;
+  margin: 2em;
+  padding: 0;
+}
+
+.App-menu_button {
   width: 200px;
-  font-size: 1.5em
+  box-shadow: 2px 2px 3px 3px rgba(124, 124, 124, 0.8);
+}
+
+.App-menu_button>div {
+  font-size: 1.5em;
+}
+
+.Uc-logo {
+  float: right;
+  padding: 15px;
 }
 
 /*PAGE LAYOUT */
@@ -54,7 +81,6 @@ body {
 
 .prediction {
   width: 320px;
-  /* height: 400px; */
 }
 
 .request {
@@ -92,7 +118,6 @@ body {
 .App-body {
   position: relative;
   top: 5vh;
-  /* width: 70vw; */
   margin: 0em auto;
 }
 
@@ -135,7 +160,7 @@ label>input {
   border: 2em solid transparent;
   border-bottom: 2em solid rgba(255, 255, 255, 1);
   top: -4em;
-  left: 75%
+  left: 65%
 }
 
 /* ARROW TOOLTIPS */
@@ -156,8 +181,13 @@ hr {
 
 .result-cell {
   display: table-cell;
-  font-weight: bold;
+  font-weight: 500;
   padding: 1em;
+}
+
+.result-cell>small {
+  font-weight: 400;
+  color: gray;
 }
 
 /* Prediction Table */
@@ -172,6 +202,9 @@ hr {
 }
 
 @media (max-width:1024px) {
+  .App-title {
+    font-size: 1.5em;
+  }
   .App-layout {
     display: grid;
     width: 90vw;
@@ -189,9 +222,15 @@ hr {
   .report {
     grid-area: 3/auto
   }
+  .up {
+    left: 65%
+  }
 }
 
 @media (max-width:600px) {
+  .App-title {
+    font-size: 1.3em;
+  }
   .App {
     width: 90vw;
   }
