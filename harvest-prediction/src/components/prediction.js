@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import { Icon } from "office-ui-fabric-react/lib/Icon";
+// import { Icon } from "office-ui-fabric-react/lib/Icon";
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
-import {
-  TextField,
-  MaskedTextField
-} from "office-ui-fabric-react/lib/TextField";
-import { disableBodyScroll } from "@uifabric/utilities";
+import { TextField } from "office-ui-fabric-react/lib/TextField";
+// import { disableBodyScroll } from "@uifabric/utilities";
+import Report from "./report";
 
 const styles = {
   fieldset: {
@@ -51,24 +49,43 @@ class Prediction extends Component {
     this.state = {
       startDate: "",
       endDate: "",
-      zipcode: ""
+      zipcode: "",
+      reportDate: []
     };
   }
+  //SMOOTH SCROLL TO ELEMENT//
   scrollToMyRef = () => window.scrollTo(0, this.myRef.current.offsetTop);
 
   onChange = e => {
-    // e.preventDefault();
-    console.log(e.target.value);
     this.setState({ [e.target.name]: e.target.value });
+    console.log(e.target.value);
     console.log(this.state);
   };
   fetchResult = e => {
     e.preventDefault();
-    // this.refs.scrollIntoView();
     this.scrollToMyRef();
+    this.dateAddOne();
+  };
+
+  // ADD ONE DAY TO PREDICTION DATE//
+  dateAddOne = () => {
+    let tomorrow = new Date(this.state.endDate);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    let dateArray = [tomorrow.toLocaleDateString()];
+    for (let i = 0; i < 13; i++) {
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      let newDate = tomorrow.toLocaleDateString();
+      dateArray = [...dateArray, newDate];
+      this.setState({
+        reportDate: dateArray
+      });
+    }
   };
 
   render() {
+    {
+      console.log(this.state);
+    }
     return (
       <div className="App-layout ">
         <div className="container prediction">
@@ -80,7 +97,7 @@ class Prediction extends Component {
                 name="startDate"
                 onChange={this.onChange}
                 type="date"
-                min="1000-01-01"
+                min="1900-01-01"
                 max="9999-12-31"
                 iconProps={{
                   iconName: "DateTime",
@@ -97,7 +114,8 @@ class Prediction extends Component {
                 name="endDate"
                 onChange={this.onChange}
                 type="date"
-                min="1000-01-01"
+                min="1900-01-01"
+                // min={this.state.startDate}
                 max="9999-12-31"
                 iconProps={{
                   iconName: "DateTime",
@@ -111,16 +129,31 @@ class Prediction extends Component {
             <fieldset style={styles.fieldset}>
               <legend style={styles.legend}>ZIP Code</legend>
               <select
+                pepe="showpepe"
                 onChange={this.onChange}
                 name="zipcode"
                 style={styles.select}
                 select
-                defaultValue="90003"
+                defaultValue="93234"
               >
-                <option value="90001">90001</option>
-                <option value="90002">90002</option>
-                <option value="90003">90003</option>
-                <option value="90004">90004</option>
+                <option value="93234" text="93234 / Huron,CA">
+                  93234 / Huron,CA
+                </option>
+                <option value="93280" text="93280 / Wasco,CA">
+                  93280 / Wasco,CA
+                </option>
+                <option value="93640" text="93640 / Mendota,CA">
+                  93640 / Mendota,CA
+                </option>
+                <option value="93648" text="93648 / Parlier,CA">
+                  93648 / Parlier,CA
+                </option>
+                <option value="95912" text="95912 / Arbuckle,CA<">
+                  95912 / Arbuckle,CA
+                </option>
+                <option value="97124" text="97124 / Hillsboro">
+                  97124 / Hillsboro
+                </option>
               </select>
               <span style={styles.inputSpan}>Select a ZIP Code</span>
             </fieldset>
@@ -171,6 +204,11 @@ class Prediction extends Component {
           <div className="arrowBubble up" />
 
           <h3>Report</h3>
+          <Report
+            dateAddOne={this.dateAddOne}
+            reportDate={this.state.reportDate}
+            endDate={this.state.endDate}
+          />
         </div>
       </div>
     );
