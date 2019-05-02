@@ -4,7 +4,10 @@ import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 // import { disableBodyScroll } from "@uifabric/utilities";
 import Report from "./report";
+import LabeledHeatmap from "./chart";
 
+import { TeachingBubble } from "office-ui-fabric-react/lib/TeachingBubble";
+import Notification from "./notification";
 const styles = {
   fieldset: {
     maxWidth: "300px",
@@ -50,7 +53,8 @@ class Prediction extends Component {
       startDate: "",
       endDate: "",
       zipcode: "",
-      reportDate: []
+      reportDate: [],
+      notification: true
     };
   }
   //SMOOTH SCROLL TO ELEMENT//
@@ -58,16 +62,15 @@ class Prediction extends Component {
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-    console.log(e.target.value);
-    console.log(this.state);
   };
   fetchResult = e => {
     e.preventDefault();
     this.scrollToMyRef();
+    this.inputValidation();
     this.dateAddOne();
   };
 
-  // ADD ONE DAY TO PREDICTION DATE//
+  //ADD ONE DAY TO PREDICTION DATE//
   dateAddOne = () => {
     let tomorrow = new Date(this.state.endDate);
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -81,6 +84,12 @@ class Prediction extends Component {
       });
     }
   };
+  //INPUT VALIDATION LOGIC//
+  inputValidation = () => {
+    this.setState({
+      notification: !this.state.notification
+    });
+  };
 
   render() {
     {
@@ -90,15 +99,17 @@ class Prediction extends Component {
       <div className="App-layout ">
         <div className="container prediction">
           <h3>Harvest Prediction</h3>
-          <form>
+          <form onSubmit={this.fetchResult}>
             <fieldset style={styles.fieldset}>
               <legend style={styles.legend}>Start Date</legend>
               <TextField
+                type="sub"
                 name="startDate"
                 onChange={this.onChange}
                 type="date"
-                min="1900-01-01"
+                min="1950-01-01"
                 max="9999-12-31"
+                required
                 iconProps={{
                   iconName: "DateTime",
                   style: { color: "rgba(130,130,130)" }
@@ -114,9 +125,9 @@ class Prediction extends Component {
                 name="endDate"
                 onChange={this.onChange}
                 type="date"
-                min="1900-01-01"
-                // min={this.state.startDate}
+                min="1950-01-01"
                 max="9999-12-31"
+                required
                 iconProps={{
                   iconName: "DateTime",
                   style: { color: "rgba(130,130,130)" }
@@ -129,13 +140,15 @@ class Prediction extends Component {
             <fieldset style={styles.fieldset}>
               <legend style={styles.legend}>ZIP Code</legend>
               <select
-                pepe="showpepe"
                 onChange={this.onChange}
                 name="zipcode"
                 style={styles.select}
-                select
-                defaultValue="93234"
+                selected
+                required
               >
+                <option value="" selected disabled hidden>
+                  -- Select an option --
+                </option>
                 <option value="93234" text="93234 / Huron,CA">
                   93234 / Huron,CA
                 </option>
@@ -151,17 +164,23 @@ class Prediction extends Component {
                 <option value="95912" text="95912 / Arbuckle,CA<">
                   95912 / Arbuckle,CA
                 </option>
-                <option value="97124" text="97124 / Hillsboro">
-                  97124 / Hillsboro
+                <option value="97124" text="97124 / Hillsboro,OR">
+                  97124 / Hillsboro,OR
                 </option>
               </select>
               <span style={styles.inputSpan}>Select a ZIP Code</span>
             </fieldset>
-            <PrimaryButton onClick={this.fetchResult}>Predict</PrimaryButton>
+            {this.state.notification ? <Notification notification={this.state.notification} /> : null}
+            <PrimaryButton
+              type="submit"
+              // onClick={this.fetchResult}
+            >
+              Predict
+            </PrimaryButton>
           </form>
         </div>
 
-        <div className="container request">
+        <div id={"pepe"} className="container request">
           <div className="arrowBubble left" />
           <h3>Request</h3>
           <p>Calculation by the thermal unit formula and the R model</p>
@@ -200,6 +219,7 @@ class Prediction extends Component {
           </div>
           <hr />
         </div>
+
         <div ref={this.myRef} className="container report">
           <div className="arrowBubble up" />
 
@@ -210,6 +230,11 @@ class Prediction extends Component {
             endDate={this.state.endDate}
           />
         </div>
+
+        {/* <div className="container heatmap">
+          <div className="arrowBubble up" />
+      
+        </div> */}
       </div>
     );
   }

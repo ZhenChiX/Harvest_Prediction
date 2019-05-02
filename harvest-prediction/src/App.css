@@ -234,6 +234,28 @@ tr:nth-child(even) {
 
 /* Prediction Table */
 
+/* Prediction Heatmap */
+
+.report-heatmap {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Prediction Heatmap */
+
+/* NOTIFICATION */
+
+.notification {
+    margin: 1em auto;
+    text-align: left;
+    background: rgba(0,120,212,1);
+    padding: 0.5em 1em 0.5em 1em;
+    color: white;
+    border-radius: 8px;
+    display: block;
+    max-width: 300px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
