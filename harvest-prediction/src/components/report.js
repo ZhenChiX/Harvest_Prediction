@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+
+import LabeledHeatmap from "./chart";
 class Report extends Component {
   constructor(props) {
     super(props);
@@ -73,10 +75,11 @@ class Report extends Component {
     return (
       <div>
         <h3 />
+          <hr />
         <table id="report-table">
           <tr className="table-header">
             <th id="report-date">Date</th>
-            <th id="report-heat">Heat Unit</th>
+            <th id="report-thermal">Thermal Unit</th>
             <th id="report-volume">Volume(%)</th>
             <th id="report-embryo">Embryo(%)</th>
             <th id="report-firmness">Firmness(%)</th>
@@ -97,6 +100,8 @@ class Report extends Component {
             )
           )}
         </table>
+        <hr />
+        <LabeledHeatmap />
       </div>
     );
   }
