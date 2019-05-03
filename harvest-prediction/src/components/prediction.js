@@ -9,77 +9,6 @@ import LabeledHeatmap from "./chart";
 import { TeachingBubble } from "office-ui-fabric-react/lib/TeachingBubble";
 import Notification from "./notification";
 
-const serverData = {
-  currentTU: 1052.88,
-  TotalTU: 2514.91537,
-  StartDate: "04012019",
-  resultTable: {
-    predict14Days: [
-      1067.38,
-      1082.88,
-      1099.88,
-      1112.38,
-      1124.88,
-      1138.38,
-      1154.38,
-      1171.38,
-      1190.38,
-      1209.88,
-      1229.38,
-      1249.38,
-      1268.88,
-      1284.88
-    ],
-    pred14DaysVolume: [
-      99.92,
-      99.93,
-      99.94,
-      99.94,
-      99.95,
-      99.95,
-      99.96,
-      99.97,
-      99.97,
-      99.97,
-      99.98,
-      99.98,
-      99.98,
-      99.99
-    ],
-    pred14DaysEmbyro: [
-      29.32,
-      31.09,
-      33.04,
-      34.49,
-      35.94,
-      37.5,
-      39.35,
-      41.31,
-      43.49,
-      45.7,
-      47.89,
-      50.09,
-      52.2,
-      53.89
-    ],
-    pred14DaysFirmness: [
-      62.01,
-      63.09,
-      64.25,
-      65.09,
-      65.91,
-      66.78,
-      67.79,
-      68.84,
-      69.98,
-      71.12,
-      72.22,
-      73.32,
-      74.36,
-      75.18
-    ]
-  }
-};
 // let url = "http://45.33.57.20:3000/wudb";
 // let url = "http://dummy.restapiexample.com/api/v1/employee/20972";
 
@@ -132,8 +61,6 @@ class Prediction extends Component {
       notification: false,
       serverData: null,
       populate: false
-
-      // serverData: serverData
     };
   }
 
@@ -142,14 +69,14 @@ class Prediction extends Component {
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-    console.log(this.state);
+    // console.log(this.state);
   };
   //INPUT VALIDATION LOGIC//
   inputValidation = () => {
     let endDate = new Date(this.state.endDate);
     let startDate = new Date(this.state.startDate);
     let daysGap = (endDate - startDate) / 86400000;
-    console.log("Day's Gap:" + daysGap);
+    console.log(`Day's Gap: ${daysGap}`);
 
     if (daysGap < 1 || daysGap >= 365) {
       this.setState({
@@ -157,14 +84,11 @@ class Prediction extends Component {
       });
       console.log("not in range");
     } else {
-      // this.setState({ serverData: serverData }
-
       this.fetchAPI().then(() => {
         this.dateAddOne();
-        // this.formatDate();
-        this.scrollToMyRef();
-        this.setState({ populate: true }, console.log("well populate"));
+        this.setState({ populate: true }, console.log("Well Done,data being populate"));
         console.log(this.state);
+        this.scrollToMyRef();
       });
     }
   };
@@ -181,8 +105,7 @@ class Prediction extends Component {
     let dateArray = [tomorrow.toLocaleDateString()];
     for (
       let i = 0;
-      // i < 13;
-      i < this.state.serverData.resultTable.predict14Days.length -1;
+      i < this.state.serverData.resultTable.predict14Days.length - 1;
       i++
     ) {
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -202,7 +125,7 @@ class Prediction extends Component {
   };
   //GET FETCH
   fetchAPI = async () => {
-    let url = `http://45.33.57.20:3000/r?startDate=${
+    const url = `http://45.33.57.20:3000/r?startDate=${
       this.state.startDate
     }&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
     try {
