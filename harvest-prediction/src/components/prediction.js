@@ -61,6 +61,30 @@ class Prediction extends Component {
     };
   }
 
+  //GET FETCH
+  fetchAPI = async () => {
+    const url = `http://45.33.57.20:3000/r?startDate=${
+      this.state.startDate
+    }&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
+    try {
+      let response = await fetch(url, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Headers": "origin, content-type, accept",
+          "Access-Control-Allow-Credentials": true
+        },
+        mode: "cors"
+      });
+      let returnAPI = await response.json();
+      this.setState({ serverData: returnAPI });
+      console.log(this.state);
+      console.log("step 1");
+    } catch (e) {
+      console.log(e.message);
+      console.log("something went wrong");
+    }
+  };
   //SMOOTH SCROLL TO ELEMENT//
   scrollToMyRef = () => window.scrollTo(0, this.myRef.current.offsetTop);
 
@@ -85,8 +109,8 @@ class Prediction extends Component {
         this.setState(
           { populate: true },
           console.log("Well Done,data being populate")
-          );
-          this.dateAddOne()
+        );
+        this.dateAddOne();
         console.log(this.state);
         this.scrollToMyRef();
       });
@@ -100,16 +124,11 @@ class Prediction extends Component {
 
   //ADD ONE DAY TO PREDICTION DATE//
   dateAddOne = () => {
-    
     let tomorrow = new Date(this.state.endDate);
     tomorrow.setDate(tomorrow.getDate() + 1);
     let dateArray = [tomorrow.toLocaleDateString()];
-    console.log("step 2")
-    for (
-      let i = 0;
-      i < this.state.serverData.resultTable.predict14Days.length - 1;
-      i++
-    ) {
+    console.log("step 2");
+    for (let i = 0; i < 13; i++) {
       tomorrow.setDate(tomorrow.getDate() + 1);
       let newDate = tomorrow.toLocaleDateString();
       dateArray = [...dateArray, newDate];
@@ -125,30 +144,7 @@ class Prediction extends Component {
 
     this.setState({ formatDate: newDateHead + newDateEnd });
   };
-  //GET FETCH
-  fetchAPI = async () => {
-    const url = `http://45.33.57.20:3000/r?startDate=${
-      this.state.startDate
-    }&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
-    try {
-      let response = await fetch(url, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json; charset=utf-8",
-          "Access-Control-Allow-Headers": "origin, content-type, accept",
-          "Access-Control-Allow-Credentials": true
-        },
-        mode: "cors"
-      });
-      let returnAPI = await response.json();
-      this.setState({ serverData: returnAPI });
-      console.log(this.state);
-      console.log("step 1")
-    } catch (e) {
-      console.log(e.message);
-      console.log("something went wrong");
-    }
-  };
+
   // CLOSE NOTIFICATION
   closeNotification = () => {
     this.setState({ notification: false });
