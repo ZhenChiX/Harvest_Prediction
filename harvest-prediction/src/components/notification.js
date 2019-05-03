@@ -2,18 +2,18 @@ import React, { Component } from "react";
 
 class Notification extends Component {
   state = {
-    notification: this.props.notification
+    notification: true
   };
   onClose = () => {
-    this.setState({ notification: !this.state.notification });
+    this.props.close();
   };
   render() {
-    return this.state.notification ? (
+    return this.state.notification && this.props.notification ? (
       <div className="notification">
         <i
           onClick={this.onClose}
           className="fas fa-times-circle"
-          style={{ float: "right",cursor:"pointer" }}
+          style={{ float: "right", cursor: "pointer" }}
         />
         <h4>
           <i
