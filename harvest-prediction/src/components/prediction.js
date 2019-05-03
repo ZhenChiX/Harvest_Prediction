@@ -9,9 +9,6 @@ import LabeledHeatmap from "./chart";
 import { TeachingBubble } from "office-ui-fabric-react/lib/TeachingBubble";
 import Notification from "./notification";
 
-// let url = "http://45.33.57.20:3000/wudb";
-// let url = "http://dummy.restapiexample.com/api/v1/employee/20972";
-
 const styles = {
   fieldset: {
     maxWidth: "300px",
@@ -85,8 +82,11 @@ class Prediction extends Component {
       console.log("not in range");
     } else {
       this.fetchAPI().then(() => {
-        this.dateAddOne();
-        this.setState({ populate: true }, console.log("Well Done,data being populate"));
+        this.setState(
+          { populate: true },
+          console.log("Well Done,data being populate")
+          );
+          this.dateAddOne()
         console.log(this.state);
         this.scrollToMyRef();
       });
@@ -100,9 +100,11 @@ class Prediction extends Component {
 
   //ADD ONE DAY TO PREDICTION DATE//
   dateAddOne = () => {
+    
     let tomorrow = new Date(this.state.endDate);
     tomorrow.setDate(tomorrow.getDate() + 1);
     let dateArray = [tomorrow.toLocaleDateString()];
+    console.log("step 2")
     for (
       let i = 0;
       i < this.state.serverData.resultTable.predict14Days.length - 1;
@@ -130,15 +132,18 @@ class Prediction extends Component {
     }&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
     try {
       let response = await fetch(url, {
-        mode: "cors",
         headers: {
-          AccessControlAllowOrigin: "*"
-        }
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json; charset=utf-8",
+          "Access-Control-Allow-Headers": "origin, content-type, accept",
+          "Access-Control-Allow-Credentials": true
+        },
+        mode: "cors"
       });
       let returnAPI = await response.json();
-      console.log(returnAPI);
       this.setState({ serverData: returnAPI });
       console.log(this.state);
+      console.log("step 1")
     } catch (e) {
       console.log(e.message);
       console.log("something went wrong");
