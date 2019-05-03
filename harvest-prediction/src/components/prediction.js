@@ -80,10 +80,9 @@ const serverData = {
     ]
   }
 };
-let url = "http://45.33.57.20:3000/wudb";
+// let url = "http://45.33.57.20:3000/wudb";
 // let url = "http://dummy.restapiexample.com/api/v1/employee/20972";
 
-// let url ="http://45.33.57.20:3000/r?startDate=04012019&endDate=04282019&zipcode=93280"
 const styles = {
   fieldset: {
     maxWidth: "300px",
@@ -131,16 +130,19 @@ class Prediction extends Component {
       zipcode: "",
       reportDate: [],
       notification: false,
-      returnAPI: null,
+      serverData: null,
       populate: false
+
       // serverData: serverData
     };
   }
+
   //SMOOTH SCROLL TO ELEMENT//
   scrollToMyRef = () => window.scrollTo(0, this.myRef.current.offsetTop);
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+    console.log(this.state);
   };
   //INPUT VALIDATION LOGIC//
   inputValidation = () => {
@@ -155,35 +157,21 @@ class Prediction extends Component {
       });
       console.log("not in range");
     } else {
-      this.setState(
-        {
-          serverData: serverData
-        },
-        () => {
-          this.setState({ populate: true });
-          this.dateAddOne();
-          console.log(this.state);
-          this.scrollToMyRef();
-        }
-      );
+      // this.setState({ serverData: serverData }
+
+      this.fetchAPI().then(() => {
+        this.dateAddOne();
+        // this.formatDate();
+        this.scrollToMyRef();
+        this.setState({ populate: true }, console.log("well populate"));
+        console.log(this.state);
+      });
     }
   };
   // ONE BUTTON TO RULE THEM ALL //
   fetchResult = e => {
     e.preventDefault();
-    // this.scrollToMyRef();
     this.inputValidation();
-    // this.fetchAPI();
-    // this.setState(
-    //   {
-    //     serverData: serverData
-    //   },
-    //   () => {
-    //     this.setState({ populate: true });
-    //     this.dateAddOne();
-    //     console.log(this.state);
-    //   }
-    // );
   };
 
   //ADD ONE DAY TO PREDICTION DATE//
@@ -193,7 +181,8 @@ class Prediction extends Component {
     let dateArray = [tomorrow.toLocaleDateString()];
     for (
       let i = 0;
-      i < this.state.serverData.resultTable.predict14Days.length;
+      // i < 13;
+      i < this.state.serverData.resultTable.predict14Days.length -1;
       i++
     ) {
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -204,9 +193,18 @@ class Prediction extends Component {
       });
     }
   };
+  // FORMAT DATE FROM API CALL //
+  formatDate = date => {
+    let newDateHead = date.replace(/[/]/g, "").slice(4, 8);
+    let newDateEnd = date.replace(/[/]/g, "").slice(0, 4);
 
+    this.setState({ formatDate: newDateHead + newDateEnd });
+  };
   //GET FETCH
   fetchAPI = async () => {
+    let url = `http://45.33.57.20:3000/r?startDate=${
+      this.state.startDate
+    }&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
     try {
       let response = await fetch(url, {
         mode: "cors",
@@ -216,7 +214,7 @@ class Prediction extends Component {
       });
       let returnAPI = await response.json();
       console.log(returnAPI);
-      this.setState({ returnAPI: returnAPI });
+      this.setState({ serverData: returnAPI });
       console.log(this.state);
     } catch (e) {
       console.log(e.message);
@@ -228,25 +226,6 @@ class Prediction extends Component {
     this.setState({ notification: false });
   };
 
-  // fetchAPI2 = () => {
-  //   fetch(url)
-  //     .then(function(response) {
-  //       if (!response.ok) {
-  //         throw Error(response.statusText);
-  //       }
-  //       return response.json();
-  //     })
-  //     .then(function(response) {
-  //       console.log("ok");
-  //       console.log(response);
-  //       let returnAPI = response;
-  //       this.setState({ returnAPI: { returnAPI } });
-  //       console.log(this.state);
-  //     })
-  //     .catch(function(error) {
-  //       console.log(error);
-  //     });
-  // };
   render() {
     return (
       <div className="App-layout ">
@@ -338,34 +317,34 @@ class Prediction extends Component {
           <h2>Request</h2>
           <p>Calculation by the thermal unit formula and the R model</p>
           <hr />
-          <div className="result-table">
-            <div className="result-row">
-              <p className="result-cell">Bloom Date:</p>
-              <p className="result-cell" style={styles.resultP}>
+          <div className="request-table">
+            <div className="request-row">
+              <p className="request-cell bold">Bloom Date:</p>
+              <p className="request-cell" style={styles.resultP}>
                 {this.state.startDate}
               </p>
             </div>
-            <div className="result-row">
-              <p className="result-cell">End Date:</p>
-              <p className="result-cell" style={styles.resultP}>
+            <div className="request-row">
+              <p className="request-cell bold">End Date:</p>
+              <p className="request-cell" style={styles.resultP}>
                 {this.state.endDate}
               </p>
             </div>
-            <div className="result-row">
-              <p className="result-cell">Cultivar:</p>
-              <p className="result-cell" style={styles.resultP}>
+            <div className="request-row">
+              <p className="request-cell bold">Cultivar:</p>
+              <p className="request-cell" style={styles.resultP}>
                 Kerman
               </p>
             </div>
-            <div className="result-row">
-              <p className="result-cell">Model Selection:</p>
-              <p className="result-cell" style={styles.resultP}>
+            <div className="request-row">
+              <p className="request-cell bold">Model Selection:</p>
+              <p className="request-cell" style={styles.resultP}>
                 Pistachio_Model_3
               </p>
             </div>
-            <div className="result-row">
-              <p className="result-cell">ZIP Code:</p>
-              <p className="result-cell" style={styles.resultP}>
+            <div className="request-row">
+              <p className="request-cell bold">ZIP Code:</p>
+              <p className="request-cell" style={styles.resultP}>
                 {this.state.zipcode}
               </p>
             </div>
@@ -385,11 +364,6 @@ class Prediction extends Component {
             populate={this.state.populate}
           />
         </div>
-
-        {/* <div className="container heatmap">
-          <div className="arrowBubble up" />
-      
-        </div> */}
       </div>
     );
   }
