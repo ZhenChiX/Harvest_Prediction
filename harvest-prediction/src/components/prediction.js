@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-// import { Icon } from "office-ui-fabric-react/lib/Icon";
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
-// import { disableBodyScroll } from "@uifabric/utilities";
 import Report from "./report";
 import LabeledHeatmap from "./chart";
-
-import { TeachingBubble } from "office-ui-fabric-react/lib/TeachingBubble";
 import Notification from "./notification";
 
 const styles = {
@@ -128,7 +124,12 @@ class Prediction extends Component {
     tomorrow.setDate(tomorrow.getDate() + 1);
     let dateArray = [tomorrow.toLocaleDateString()];
     console.log("step 2");
-    for (let i = 0; i < 13; i++) {
+    for (
+      let i = 0;
+      // i < 13;
+      i < this.state.serverData.resultTable.predict14Days.length;
+      i++
+    ) {
       tomorrow.setDate(tomorrow.getDate() + 1);
       let newDate = tomorrow.toLocaleDateString();
       dateArray = [...dateArray, newDate];
