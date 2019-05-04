@@ -94,8 +94,9 @@ class Prediction extends Component {
     let startDate = new Date(this.state.startDate);
     let daysGap = (endDate - startDate) / 86400000;
     console.log(`Day's Gap: ${daysGap}`);
+    this.setState({ daysGap: daysGap });
 
-    if (daysGap < 1 || daysGap >= 365) {
+    if (daysGap < 0) {
       this.setState({
         notification: true
       });
@@ -107,8 +108,8 @@ class Prediction extends Component {
           console.log("Well Done,data being populate")
         );
         this.dateAddOne();
-        console.log(this.state);
         this.scrollToMyRef();
+        console.log(this.state);
       });
     }
   };
@@ -126,7 +127,6 @@ class Prediction extends Component {
     console.log("step 2");
     for (
       let i = 0;
-      // i < 13;
       i < this.state.serverData.resultTable.predict14Days.length - 1;
       i++
     ) {
@@ -152,7 +152,7 @@ class Prediction extends Component {
   };
 
   combineData = () => {
-    let combineData = [this.state.reportDate.map(x => x)];
+    let combineData = this.state.reportDate.map(x => x);
   };
   render() {
     return (
@@ -240,7 +240,7 @@ class Prediction extends Component {
           </form>
         </div>
 
-        <div id={"pepe"} className="container request">
+        <div className="container request">
           <div className="arrowBubble left" />
           <h2>Request</h2>
           <p>Calculation by the thermal unit formula and the R model</p>
@@ -258,6 +258,12 @@ class Prediction extends Component {
                 {this.state.endDate}
               </p>
             </div>
+            {/* <div className="request-row">
+              <p className="request-cell bold">Days Between:</p>
+              <p className="request-cell" style={styles.resultP}>
+                {this.state.daysGap}
+              </p>
+            </div> */}
             <div className="request-row">
               <p className="request-cell bold">Cultivar:</p>
               <p className="request-cell" style={styles.resultP}>
