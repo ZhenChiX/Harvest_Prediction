@@ -26,7 +26,7 @@ class Report extends Component {
             )}
           </div>
           <div className="request-row">
-            <p className="request-cell bold">End Date Total Thermal Unit:</p>
+            <p className="request-cell bold">History Total Thermal Unit:</p>
             {this.props.populate && (
               <p className="request-cell">
                 &nbsp;
