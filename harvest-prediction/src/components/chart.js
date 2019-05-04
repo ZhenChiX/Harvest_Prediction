@@ -17,73 +17,47 @@ import {
   MarkSeries,
   Highlight,
   Crosshair,
-  Voronoi
+  Voronoi,
+  DiscreteColorLegend,
+  FlexibleXYPlot
 } from "react-vis";
 import { autobind } from "@uifabric/utilities";
-const data2 = [
-  { x: 0, y: 8 },
-  { x: 1, y: 5 },
-  { x: 2, y: 4 },
-  { x: 3, y: 9 },
-  { x: 4, y: 1 },
-  { x: 5, y: 7 },
-  { x: 6, y: 6 },
-  { x: 7, y: 3 },
-  { x: 8, y: 2 },
-  { x: 9, y: 0 }
-];
-
-const DATA = [
-  { x: 1, y: 4, size: 2 },
-  { x: 1, y: 5, size: 18 },
-  { x: 1, y: 10, size: 5 },
-  { x: 1, y: 11, size: 29 },
-  { x: 1, y: 13.9, size: 5 },
-  { x: 1, y: 14, size: 20 },
-  { x: 1.5, y: 11.8, size: 25 },
-  { x: 1.7, y: 9, size: 30 },
-  { x: 2, y: 5, size: 11 },
-  { x: 2.1, y: 11.8, size: 28 },
-  { x: 2.4, y: 7.9, size: 14 },
-  { x: 2.4, y: 13.5, size: 20 },
-  { x: 2.7, y: 13.7, size: 14 },
-  { x: 2.9, y: 7.7, size: 26 },
-  { x: 3, y: 5.4, size: 6 }
-].map((d, id) => ({ ...d, id }));
-
-const getDomain = (data, key) => {
-  const { min, max } = data.reduce(
-    (acc, row) => ({
-      min: Math.min(acc.min, row[key]),
-      max: Math.max(acc.max, row[key])
-    }),
-    { min: Infinity, max: -Infinity }
-  );
-  return [min, max];
-};
 
 // magic numbers chosen for design
 const sizeRange = [5, 13];
-const margin = { top: 10, left: 40, bottom: 40, right: 10 };
+// const margin = { "1em"auto };
 const width = 600;
 const height = 600;
 
-// Intentionally using explicit sales here to show another way of using the voronoi
-const x = scaleLinear()
-  .domain(getDomain(DATA, "x"))
-  .range([0, width]);
-const y = scaleLinear()
-  .domain(getDomain(DATA, "y"))
-  .range([height, 0]);
-const FlexibleXYPlot = makeWidthFlexible(XYPlot);
+const ITEMS = [
+  {
+    title: "Volume %",
+    // color: "#45aeb1",
+    strokeStyle: "dashed",
+    strokeLinejoin: "round",
+    strokeWidth: 3
+  },
+  {
+    title: "Embryo %",
+    //  color: "#f93",
+    strokeDasharray: "7, 3"
+  },
+  { title: "Firmness %", strokeWidth: 3 }
+];
 
+const styles = {
+  chart: {
+    // margin: "1em auto"
+  }
+};
+// const FlexibleXYPlot = makeVisFlexible(XYPlot);
 export default class LabeledHeatmap extends Component {
   state = {
     value: null,
     height: 0,
     width: 0,
     selectedPointId: null,
-    showVoronoi: true
+    hoveredNode: null
   };
 
   _forgetValue = () => {
@@ -109,68 +83,35 @@ export default class LabeledHeatmap extends Component {
   };
   render() {
     const { value } = this.state;
-    const { crosshairValues, selectedPointId, showVoronoi } = this.state;
+    const {
+      crosshairValues,
+      selectedPointId,
+      hoveredNode,
+      showVoronoi
+    } = this.state;
     const exampleColorScale = scaleLinear();
-    //   .domain([min, (min + max) / 2, max])
-    //   .range(["orange", "white", "cyan"]);
-
-    // const ratio = 0.5;
-    // console.log(this.props.serverData);
+    let { endDate } = this.props;
+    console.log(this.props);
+    const {} = this.state;
     return (
-      <div className="report-heatmap">
-        {/* <label style={{ display: "block" }}>
-          <input
-            type="checkbox"
-            checked={showVoronoi}
-            onChange={() => this.setState({ showVoronoi: !showVoronoi })}
-          />
-          Show Voronoi
-        </label>
-        <FlexibleXYPlot
-          onMouseLeave={() =>
-            this.setState({ selectedPointId: null, crosshairValues: null })
-          }
-          width={width}
-          height={width}
-        >
-          <VerticalGridLines />
-          <HorizontalGridLines />
-          <XAxis />
-          <YAxis />
-          <MarkSeries
-            className="mark-series-example"
-            colorType="literal"
-            data={DATA}
-            onNearestXY={(value, { index }) =>
-              this.setState({
-                selectedPointId: index,
-                crosshairValues: [value]
-              })
-            }
-            getColor={({ id }) =>
-              selectedPointId === id ? "#FF6633" : "#0099FF"
-            }
-            sizeRange={sizeRange}
-          />
-          {crosshairValues && <Crosshair values={crosshairValues} />}
-          {showVoronoi && (
-            <Voronoi
-              extent={[
-                [margin.left, margin.top],
-                [width - margin.right, height - margin.bottom]
-              ]}
-              nodes={DATA}
-              polygonStyle={{ stroke: "rgba(0, 0, 0, .2)" }}
-              x={d => x(d.x)}
-              y={d => y(d.y)}
-            />
-          )}
-        </FlexibleXYPlot> */}
+      <div className="report-charts">
         {/* ANOTHER CHART */}
-        <XYPlot width={width} height={width}>
+
+        <XYPlot
+          className="report-lineChart"
+          style={styles.chart}
+          width={width}
+          height={height}
+        >
+          {/* <FlexibleXYPlot style={styles.chart}> */}
           <HorizontalGridLines style={{ stroke: "#B7E9ED" }} />
           <VerticalGridLines style={{ stroke: "#B7E9ED" }} />
           <XAxis
+            // tickValues={this.props.reportDate}
+            // tickValues={[0, 1, 2, 3]}
+            // tickFormat={d => this.props.reportDate[d]}
+            tickLabelAngle={-30}
+            // tickTotal={14}
             title="14 Days Prediction"
             style={{
               line: { stroke: "#ADDDE1" },
@@ -178,59 +119,55 @@ export default class LabeledHeatmap extends Component {
               text: { stroke: "none", fill: "#6b6b76", fontWeight: 600 }
             }}
           />
-          <YAxis title="Volume" />
+          <YAxis title="Volume %" />
           <LineSeries
             className="first-series"
-            data={[
-              { x: 1, y: 3 },
-              { x: 2, y: 5 },
-              { x: 3, y: 3 },
-              { x: 4, y: 12 },
-              { x: 5, y: 12 },
-              { x: 6, y: 12 },
-              { x: 7, y: 12 },
-              { x: 8, y: 12 },
-              { x: 9, y: 52 },
-              { x: 10, y: 14 },
-              { x: 12, y: 112 },
-              { x: 13, y: 132 },
-              { x: 14, y: 132 }
-            ]}
+            data={this.props.chartData1}
+            animation={{
+              damping: 9,
+              stiffness: 300
+            }}
             style={{
               strokeLinejoin: "round",
-              strokeWidth: 4
+              strokeWidth: 3
             }}
-            // onNearestXY={(value, { index }) =>
-            //   this.setState({
-            //     selectedPointId: index,
-            //     crosshairValues: [value]
-            //   })
-            // }
+           
           />
-          <LineSeries className="second-series" data={null} />
           <LineSeries
             className="third-series"
             curve={"curveMonotoneX"}
-            data={[
-              { x: 1, y: 10 },
-              { x: 2, y: 4 },
-              { x: 3, y: 2 },
-              { x: 4, y: 15 }
-            ]}
+            data={this.props.chartData2}
             strokeDasharray="7, 3"
+            animation={{
+              damping: 9,
+              stiffness: 300
+            }}
+            
           />
           <LineSeries
             className="fourth-series"
-            curve={curveCatmullRom.alpha(0.5)}
-            data={[
-              { x: 1, y: 7 },
-              { x: 2, y: 11 },
-              { x: 3, y: 9 },
-              { x: 4, y: 2 }
-            ]}
+            curve={curveCatmullRom.alpha(0.7)}
+            data={this.props.chartData3}
+            animation={{
+              damping: 9,
+              stiffness: 300
+            }}
+            strokeWidth="3"
+            onNearestXY={(value, { index }) =>
+              this.setState({
+                selectedPointId: index,
+                crosshairValues: [value]
+                
+              })
+            }
           />
+
           {crosshairValues && <Crosshair values={crosshairValues} />}
         </XYPlot>
+        {/* </FlexibleXYPlot> */}
+        <div className="report-legends">
+          <DiscreteColorLegend items={ITEMS} />
+        </div>
       </div>
     );
   }

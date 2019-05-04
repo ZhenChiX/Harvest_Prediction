@@ -108,6 +108,7 @@ class Prediction extends Component {
           console.log("Well Done,data being populate")
         );
         this.dateAddOne();
+        this.combineData();
         this.scrollToMyRef();
         console.log(this.state);
       });
@@ -140,8 +141,8 @@ class Prediction extends Component {
   };
   // FORMAT DATE FROM API CALL //
   formatDate = date => {
-    let newDateHead = date.replace(/[/]/g, "").slice(4, 8);
-    let newDateEnd = date.replace(/[/]/g, "").slice(0, 4);
+    let newDateHead = date.replace(/[-/]/g, "").slice(4, 8);
+    let newDateEnd = date.replace(/[-/]/g, "").slice(0, 4);
 
     this.setState({ formatDate: newDateHead + newDateEnd });
   };
@@ -152,7 +153,31 @@ class Prediction extends Component {
   };
 
   combineData = () => {
-    let combineData = this.state.reportDate.map(x => x);
+    let chartData1 = [];
+    let chartData2 = [];
+    let chartData3 = [];
+    for (let i in this.state.serverData.resultTable.predict14Days) {
+      chartData1.push({
+        x: parseInt(i) + 1,
+        // x: this.state.reportDate[i],
+        y: this.state.serverData.resultTable.pred14DaysVolume[i]
+      });
+      chartData2.push({
+        x: parseInt(i) + 1,
+        // x: this.state.reportDate[i],
+        y: this.state.serverData.resultTable.pred14DaysEmbyro[i]
+      });
+      chartData3.push({
+        x: parseInt(i) + 1,
+        // x: this.state.reportDate[i],
+        y: this.state.serverData.resultTable.pred14DaysFirmness[i]
+      });
+    }
+    this.setState({
+      chartData1: chartData1,
+      chartData2: chartData2,
+      chartData3: chartData3
+    });
   };
   render() {
     return (
@@ -296,6 +321,9 @@ class Prediction extends Component {
             endDate={this.state.endDate}
             serverData={this.state.serverData}
             populate={this.state.populate}
+            chartData1={this.state.chartData1}
+            chartData2={this.state.chartData2}
+            chartData3={this.state.chartData3}
           />
         </div>
       </div>

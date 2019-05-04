@@ -244,12 +244,29 @@ tr:nth-child(even) {
 
 /* Prediction Heatmap */
 
-.report-heatmap {
+.report-charts {
   overflow-x: auto;
   overflow-y: hidden;
+  display: grid;
+  grid-template-areas: "chart legends";
+  margin: 0em auto
+}
+
+.report-lineChart {
+  grid-area: "chart";
+  justify-self: center;
+}
+
+.report-legend {
+  grid-area: "legends";
+  justify-self: start;
 }
 
 /* Prediction Heatmap */
+
+.report-legend {
+  float: right;
+}
 
 /* NOTIFICATION */
 

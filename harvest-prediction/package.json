@@ -11,7 +11,7 @@
     "react-vis": "^1.11.7"
   },
   "scripts": {
-    "start": "PORT=8000 react-scripts start",
+    "start": "PORT=8003 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

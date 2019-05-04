@@ -30,7 +30,7 @@ class Report extends Component {
             {this.props.populate && (
               <p className="request-cell">
                 &nbsp;
-              {this.props.serverData.currentTU}
+                {this.props.serverData.currentTU}
               </p>
             )}
           </div>
@@ -74,9 +74,18 @@ class Report extends Component {
             )}
         </table>
         <hr />
-        {/* {this.props.populate && (
-          <LabeledHeatmap serverData={this.props.serverData} />
-        )} */}
+        {this.props.populate && (
+          <LabeledHeatmap
+            serverData={this.props.serverData}
+            populate={this.props.populate}
+            chartData1={this.props.chartData1}
+            chartData2={this.props.chartData2}
+            chartData3={this.props.chartData3}
+            endDate={this.props.endDate}
+            reportDate={this.props.reportDate}
+
+          />
+        )}
       </div>
     );
   }
