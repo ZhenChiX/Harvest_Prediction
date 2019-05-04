@@ -15,8 +15,34 @@ class Report extends Component {
   render() {
     // if (!this.props.serverData)
     return (
-      <div>
+      <table>
         <hr />
+        <div className="request-table">
+          <div className="request-row">
+            <p className="request-cell bold">Recommended Thermal Unit:</p>
+            {this.props.populate && (
+              <p className="request-cell">
+                &nbsp; {this.props.serverData.TotalTU}
+              </p>
+            )}
+          </div>
+          <div className="request-row">
+            <p className="request-cell bold">Current Total Thermal Unit:</p>
+            {this.props.populate && (
+              <p className="request-cell">
+                &nbsp;
+                {this.props.serverData.resultTable.predict14Days.reduce(
+                  (a, b) => a + b
+                )}
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="report-note">
+          <small>&nbsp;Volume SD: 1% &nbsp;</small>
+          <small>&nbsp;Embryo SD: 2% &nbsp;</small>
+          <small>&nbsp;Firmness SD: 2% &nbsp;</small>
+        </div>
         <table id="report-table">
           <tr className="table-header">
             <th id="report-date">Date</th>
@@ -51,8 +77,10 @@ class Report extends Component {
             )}
         </table>
         <hr />
-        <LabeledHeatmap />
-      </div>
+        {this.props.populate && (
+          <LabeledHeatmap serverData={this.props.serverData} />
+        )}
+      </table>
     );
   }
 }

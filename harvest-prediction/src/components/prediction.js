@@ -127,7 +127,7 @@ class Prediction extends Component {
     for (
       let i = 0;
       // i < 13;
-      i < this.state.serverData.resultTable.predict14Days.length;
+      i < this.state.serverData.resultTable.predict14Days.length - 1;
       i++
     ) {
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -151,6 +151,9 @@ class Prediction extends Component {
     this.setState({ notification: false });
   };
 
+  combineData = () => {
+    let combineData = [this.state.reportDate.map(x => x)];
+  };
   render() {
     return (
       <div className="App-layout ">

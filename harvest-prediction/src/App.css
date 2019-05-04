@@ -203,6 +203,10 @@ hr {
 
 /* Prediction Table */
 
+.report-note {
+  text-align: right;
+}
+
 #report-table {
   display: block;
   overflow: auto;
