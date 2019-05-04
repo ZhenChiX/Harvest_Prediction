@@ -65,8 +65,8 @@ const getDomain = (data, key) => {
 // magic numbers chosen for design
 const sizeRange = [5, 13];
 const margin = { top: 10, left: 40, bottom: 40, right: 10 };
-const width = 700;
-const height = 700;
+const width = 600;
+const height = 600;
 
 // Intentionally using explicit sales here to show another way of using the voronoi
 const x = scaleLinear()
@@ -110,7 +110,7 @@ export default class LabeledHeatmap extends Component {
   render() {
     const { value } = this.state;
     const { crosshairValues, selectedPointId, showVoronoi } = this.state;
-    // const exampleColorScale = scaleLinear()
+    const exampleColorScale = scaleLinear();
     //   .domain([min, (min + max) / 2, max])
     //   .range(["orange", "white", "cyan"]);
 
@@ -118,7 +118,7 @@ export default class LabeledHeatmap extends Component {
     // console.log(this.props.serverData);
     return (
       <div className="report-heatmap">
-        <label style={{ display: "block" }}>
+        {/* <label style={{ display: "block" }}>
           <input
             type="checkbox"
             checked={showVoronoi}
@@ -165,32 +165,47 @@ export default class LabeledHeatmap extends Component {
               y={d => y(d.y)}
             />
           )}
-        </FlexibleXYPlot>
+        </FlexibleXYPlot> */}
         {/* ANOTHER CHART */}
         <XYPlot width={width} height={width}>
           <HorizontalGridLines style={{ stroke: "#B7E9ED" }} />
           <VerticalGridLines style={{ stroke: "#B7E9ED" }} />
           <XAxis
-            title="X Axis"
+            title="14 Days Prediction"
             style={{
               line: { stroke: "#ADDDE1" },
               ticks: { stroke: "#ADDDE1" },
               text: { stroke: "none", fill: "#6b6b76", fontWeight: 600 }
             }}
           />
-          <YAxis title="Y Axis" />
+          <YAxis title="Volume" />
           <LineSeries
             className="first-series"
             data={[
               { x: 1, y: 3 },
               { x: 2, y: 5 },
-              { x: 3, y: 15 },
-              { x: 4, y: 12 }
+              { x: 3, y: 3 },
+              { x: 4, y: 12 },
+              { x: 5, y: 12 },
+              { x: 6, y: 12 },
+              { x: 7, y: 12 },
+              { x: 8, y: 12 },
+              { x: 9, y: 52 },
+              { x: 10, y: 14 },
+              { x: 12, y: 112 },
+              { x: 13, y: 132 },
+              { x: 14, y: 132 }
             ]}
             style={{
               strokeLinejoin: "round",
               strokeWidth: 4
             }}
+            // onNearestXY={(value, { index }) =>
+            //   this.setState({
+            //     selectedPointId: index,
+            //     crosshairValues: [value]
+            //   })
+            // }
           />
           <LineSeries className="second-series" data={null} />
           <LineSeries
@@ -214,6 +229,7 @@ export default class LabeledHeatmap extends Component {
               { x: 4, y: 2 }
             ]}
           />
+          {crosshairValues && <Crosshair values={crosshairValues} />}
         </XYPlot>
       </div>
     );
