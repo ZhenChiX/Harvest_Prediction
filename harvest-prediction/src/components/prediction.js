@@ -29,9 +29,7 @@ const styles = {
     fontSize: "1em",
     borderRadius: "3px"
   },
-  resultP: {
-    // fontWeight: "bold"
-  },
+
   select: {
     width: "100%",
     height: "2em",
@@ -153,30 +151,19 @@ class Prediction extends Component {
   };
 
   combineData = () => {
-    let chartData1 = [];
-    let chartData2 = [];
-    let chartData3 = [];
+    let chartAll = [];
     for (let i in this.state.serverData.resultTable.predict14Days) {
-      chartData1.push({
-        x: parseInt(i) + 1,
-        // x: this.state.reportDate[i],
-        y: this.state.serverData.resultTable.pred14DaysVolume[i]
-      });
-      chartData2.push({
-        x: parseInt(i) + 1,
-        // x: this.state.reportDate[i],
-        y: this.state.serverData.resultTable.pred14DaysEmbyro[i]
-      });
-      chartData3.push({
-        x: parseInt(i) + 1,
-        // x: this.state.reportDate[i],
-        y: this.state.serverData.resultTable.pred14DaysFirmness[i]
+      chartAll.push({
+        day: parseInt(i) + 1,
+        name: this.state.reportDate[i],
+        thermal: this.state.serverData.resultTable.predict14Days[i],
+        volume: this.state.serverData.resultTable.pred14DaysVolume[i],
+        embryo: this.state.serverData.resultTable.pred14DaysEmbyro[i],
+        firmness: this.state.serverData.resultTable.pred14DaysFirmness[i]
       });
     }
     this.setState({
-      chartData1: chartData1,
-      chartData2: chartData2,
-      chartData3: chartData3
+      chartAll: chartAll
     });
   };
   render() {
@@ -283,12 +270,7 @@ class Prediction extends Component {
                 {this.state.endDate}
               </p>
             </div>
-            {/* <div className="request-row">
-              <p className="request-cell bold">Days Between:</p>
-              <p className="request-cell" style={styles.resultP}>
-                {this.state.daysGap}
-              </p>
-            </div> */}
+
             <div className="request-row">
               <p className="request-cell bold">Cultivar:</p>
               <p className="request-cell" style={styles.resultP}>
@@ -321,9 +303,7 @@ class Prediction extends Component {
             endDate={this.state.endDate}
             serverData={this.state.serverData}
             populate={this.state.populate}
-            chartData1={this.state.chartData1}
-            chartData2={this.state.chartData2}
-            chartData3={this.state.chartData3}
+            chartAll={this.state.chartAll}
           />
         </div>
       </div>
