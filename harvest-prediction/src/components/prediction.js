@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
 import Report from "./report";
-import LabeledHeatmap from "./chart";
 import Notification from "./notification";
 
 const styles = {
