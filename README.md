@@ -36,6 +36,6 @@ An Harvest Prediction web app take previous bloom Date/End Date/Location to help
 
 * React
 * React-fabric
-* React-vis
+* ReCharts
 
 
