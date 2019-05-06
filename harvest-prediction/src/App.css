@@ -244,12 +244,29 @@ tr:nth-child(even) {
 
 /* Prediction Heatmap */
 
-.report-heatmap {
+.report-charts {
   overflow-x: auto;
   overflow-y: hidden;
+  display: grid;
+  grid-template-areas: "chart legends";
+  margin: 0em auto
+}
+
+.report-lineChart {
+  grid-area: "chart";
+  justify-self: center;
+}
+
+.report-legend {
+  grid-area: "legends";
+  justify-self: start;
 }
 
 /* Prediction Heatmap */
+
+.report-legend {
+  float: right;
+}
 
 /* NOTIFICATION */
 
@@ -312,7 +329,8 @@ tr:nth-child(even) {
   }
   .App-bar {
     position: fixed;
-    top: 95vh;
+    top: auto;
+    bottom: -3vh;
     background-color: rgba(0, 40, 85, 1);
     height: 4em;
     box-shadow: 2px -2px 1px 1px rgba(124, 124, 124, 0.5);

@@ -21,7 +21,7 @@ class Report extends Component {
             <p className="request-cell bold">Recommended Total Thermal Unit:</p>
             {this.props.populate && (
               <p className="request-cell">
-                &nbsp; {this.props.serverData.TotalTU}
+                &nbsp; {this.props.serverData.TotalTU.toFixed(2)}
               </p>
             )}
           </div>
@@ -30,7 +30,7 @@ class Report extends Component {
             {this.props.populate && (
               <p className="request-cell">
                 &nbsp;
-              {this.props.serverData.currentTU}
+                {this.props.serverData.currentTU.toFixed(2)}
               </p>
             )}
           </div>
@@ -74,9 +74,15 @@ class Report extends Component {
             )}
         </table>
         <hr />
-        {/* {this.props.populate && (
-          <LabeledHeatmap serverData={this.props.serverData} />
-        )} */}
+        {this.props.populate && (
+          <LabeledHeatmap
+            serverData={this.props.serverData}
+            populate={this.props.populate}
+            endDate={this.props.endDate}
+            reportDate={this.props.reportDate}
+            chartAll={this.props.chartAll}
+          />
+        )}
       </div>
     );
   }
