@@ -29,10 +29,10 @@ export default class Example extends PureComponent {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
-              dataKey="day"
-              angle={-30}
+              dataKey="date"
+              angle={-45}
               label={{
-                value: "14 Days Prediction",
+                // value: "14 Days Prediction",
                 position: "insideBottom",
                 offset: 40
               }}
