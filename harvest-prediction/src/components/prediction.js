@@ -148,6 +148,12 @@ class Prediction extends Component {
   closeNotification = () => {
     this.setState({ notification: false });
   };
+  // ONLY GETTING MM/DD
+  getMMDD = str => {
+    let formatDate = str.split("");
+    formatDate.splice(-5, 5);
+    return formatDate.join("");
+  };
 
   combineData = () => {
     let chartAll = [];
@@ -155,6 +161,7 @@ class Prediction extends Component {
       chartAll.push({
         day: parseInt(i) + 1,
         name: this.state.reportDate[i],
+        date: this.getMMDD(this.state.reportDate[i]),
         thermal: this.state.serverData.resultTable.predict14Days[i],
         volume: this.state.serverData.resultTable.pred14DaysVolume[i],
         embryo: this.state.serverData.resultTable.pred14DaysEmbyro[i],
