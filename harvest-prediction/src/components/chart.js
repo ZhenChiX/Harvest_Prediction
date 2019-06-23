@@ -14,7 +14,7 @@ import {
 export default class Example extends PureComponent {
   render() {
     const { chartAll } = this.props;
-    console.log(chartAll);
+    // console.log(chartAll);
     return (
       <div style={{ width: "95%", height: 350, margin: "1em auto" }}>
         <ResponsiveContainer>
