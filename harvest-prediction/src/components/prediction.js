@@ -50,7 +50,25 @@ class Prediction extends Component {
       reportDate: [],
       notification: false,
       serverData: null,
-      populate: false
+      populate: false,
+
+      errorValidation: {
+        errorMessageTitle: "Invalid Input",
+        errorMessage1: "Please provide valid input",
+        errorMessage2:
+          "The prediction date must be greater than the start date(Ideally within a year to get an accuracte forecast)"
+      },
+
+      errorTimeOut: {
+        errorMessageTitle: "Request Timeout",
+        errorMessage1: "Oops,something went wrong.",
+        errorMessage2: "PLEASE TRY AGAIN LATER."
+      },
+      errorStatus: {
+        errorMessageTitle: "",
+        errorMessage1: "Oops,something went wrong.",
+        errorMessage2: "WE'LL BE RIGHT BACK !!! "
+      }
     };
   }
 
@@ -70,19 +88,33 @@ class Prediction extends Component {
 
     try {
       let response = await fetch(url, { signal });
-      console.log(response);
       let returnAPI = await response.json();
       if (response.ok) {
         this.setState({ serverData: returnAPI, populate: true });
         console.log(`Status: ${response.status}  `);
       }
       if (!response.ok) {
-        console.log(response);
+        this.setState({
+          notification: true,
+          errorValidation: {
+            errorMessageTitle: response.status,
+            errorMessage1: this.state.errorStatus.errorMessage1,
+            errorMessage2: this.state.errorStatus.errorMessage2
+          }
+        });
         console.log(
           `${response.status}: Oops,something went wrong! WE'LL BE RIGHT BACK`
         );
       }
     } catch (e) {
+      this.setState({
+        notification: true,
+        errorValidation: {
+          errorMessageTitle: e.toString(),
+          errorMessage1: this.state.errorTimeOut.errorMessage1,
+          errorMessage2: this.state.errorTimeOut.errorMessage2
+        }
+      });
       console.log(e);
       console.log("Oops,something went wrong! WE'LL BE RIGHT BACK");
     }
@@ -255,6 +287,7 @@ class Prediction extends Component {
             </fieldset>
             {this.state.notification ? (
               <Notification
+                errorValidation={this.state.errorValidation}
                 notification={this.state.notification}
                 close={this.closeNotification}
               />

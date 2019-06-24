@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class Notification extends Component {
   state = {
     notification: true,
-    error: {
+    errorValidation: {
       errorMessageTitle: "Invalid Input",
       errorMessage1: "Please provide valid input",
       errorMessage2:
@@ -26,10 +26,10 @@ class Notification extends Component {
             className="fas fa-bug"
             style={{ float: "left", padding: "0 0.5em" }}
           />
-          Error Message: {this.state.error.errorMessage}
+          {this.props.errorValidation.errorMessageTitle}
         </h4>
-        <p>{this.state.error.errorMessage1}</p>
-        <p>{this.state.error.errorMessage2}</p>
+        <p>{this.props.errorValidation.errorMessage1}</p>
+        <p>{this.props.errorValidation.errorMessage2}</p>
       </div>
     ) : null;
   }
