@@ -50,32 +50,73 @@ class Prediction extends Component {
       reportDate: [],
       notification: false,
       serverData: null,
-      populate: false
+      populate: false,
+
+      errorValidation: {
+        errorMessageTitle: "Invalid Input",
+        errorMessage1: "Please provide valid input",
+        errorMessage2:
+          "The prediction date must be greater than the start date(Ideally within a year to get an accuracte forecast)"
+      },
+
+      errorTimeOut: {
+        errorMessageTitle: "Request Timeout",
+        errorMessage1: "Oops,something went wrong.",
+        errorMessage2: "PLEASE TRY AGAIN LATER."
+      },
+      errorStatus: {
+        errorMessageTitle: "",
+        errorMessage1: "Oops,something went wrong.",
+        errorMessage2: "WE'LL BE RIGHT BACK !!! "
+      }
     };
   }
 
   //GET FETCH
+
   fetchAPI = async () => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    setTimeout(() => controller.abort(), 3000);
+
+    console.log(controller);
+    console.log(signal);
     const url = `http://45.33.57.20:3000/r?startDate=${
       this.state.startDate
     }&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
+
     try {
-      let response = await fetch(url, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Headers": "origin, content-type, accept",
-          "Access-Control-Allow-Credentials": true
-        },
-        mode: "cors"
-      });
+      let response = await fetch(url, { signal });
       let returnAPI = await response.json();
-      this.setState({ serverData: returnAPI });
-      console.log(this.state);
-      console.log("step 1");
+      if (response.ok) {
+        this.setState({ serverData: returnAPI, populate: true });
+        console.log(`Status: ${response.status}  `);
+      }
+      if (!response.ok) {
+        this.setState({
+          notification: true,
+          errorValidation: {
+            errorMessageTitle: response.status,
+            errorMessage1: this.state.errorStatus.errorMessage1,
+            errorMessage2: this.state.errorStatus.errorMessage2
+          }
+        });
+        console.log(
+          `${response.status}: Oops,something went wrong! WE'LL BE RIGHT BACK`
+        );
+      }
     } catch (e) {
-      console.log(e.message);
-      console.log("something went wrong");
+      this.setState({
+        notification: true,
+        errorValidation: {
+          errorMessageTitle: e.toString(),
+          errorMessage1: this.state.errorTimeOut.errorMessage1,
+          errorMessage2: this.state.errorTimeOut.errorMessage2
+        }
+      });
+      console.log(e);
+      console.log("Oops,something went wrong! WE'LL BE RIGHT BACK");
     }
   };
   //SMOOTH SCROLL TO ELEMENT//
@@ -100,14 +141,11 @@ class Prediction extends Component {
       console.log("not in range");
     } else {
       this.fetchAPI().then(() => {
-        this.setState(
-          { populate: true },
-          console.log("Well Done,data being populate")
-        );
-        this.dateAddOne();
-        this.combineData();
-        this.scrollToMyRef();
-        console.log(this.state);
+        if (this.state.populate === true) {
+          this.dateAddOne();
+          this.combineData();
+          this.scrollToMyRef();
+        }
       });
     }
   };
@@ -122,7 +160,6 @@ class Prediction extends Component {
     let tomorrow = new Date(this.state.endDate);
     tomorrow.setDate(tomorrow.getDate() + 1);
     let dateArray = [tomorrow.toLocaleDateString()];
-    console.log("step 2");
     for (
       let i = 0;
       i < this.state.serverData.resultTable.predict14Days.length - 1;
@@ -224,7 +261,7 @@ class Prediction extends Component {
                 selected
                 required
               >
-                <option value="" selected disabled hidden>
+                <option value="" hidden>
                   -- Select an option --
                 </option>
                 <option value="93234" text="93234 / Huron,CA">
@@ -250,6 +287,7 @@ class Prediction extends Component {
             </fieldset>
             {this.state.notification ? (
               <Notification
+                errorValidation={this.state.errorValidation}
                 notification={this.state.notification}
                 close={this.closeNotification}
               />

@@ -45,30 +45,35 @@ class Report extends Component {
             <th id="report-embryo">Embryo(%)</th>
             <th id="report-firmness">Firmness(%)</th>
           </tr>
-
-          {this.props.populate &&
-            this.props.reportDate.map(
-              (x, i) => (
-                this.props.dateAddOne,
-                (
-                  <tr key={i} className="report-row">
-                    <td>{this.props.reportDate[i]}</td>
-                    <td>
-                      {this.props.serverData.resultTable.predict14Days[i]}
-                    </td>
-                    <td>
-                      {this.props.serverData.resultTable.pred14DaysVolume[i]}
-                    </td>
-                    <td>
-                      {this.props.serverData.resultTable.pred14DaysEmbyro[i]}
-                    </td>
-                    <td>
-                      {this.props.serverData.resultTable.pred14DaysFirmness[i]}
-                    </td>
-                  </tr>
+          <tbody>
+            {this.props.populate &&
+              this.props.reportDate.map(
+                (x, i) => (
+                  this.props.dateAddOne,
+                  (
+                    <tr key={i} className="report-row">
+                      <td>{this.props.reportDate[i]}</td>
+                      <td>
+                        {this.props.serverData.resultTable.predict14Days[i]}
+                      </td>
+                      <td>
+                        {this.props.serverData.resultTable.pred14DaysVolume[i]}
+                      </td>
+                      <td>
+                        {this.props.serverData.resultTable.pred14DaysEmbyro[i]}
+                      </td>
+                      <td>
+                        {
+                          this.props.serverData.resultTable.pred14DaysFirmness[
+                            i
+                          ]
+                        }
+                      </td>
+                    </tr>
+                  )
                 )
-              )
-            )}
+              )}
+          </tbody>
         </table>
         <hr />
         {this.props.populate && (
