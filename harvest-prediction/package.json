@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "npm-check": "^5.9.0",
     "office-ui-fabric-react": "^7.25.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
