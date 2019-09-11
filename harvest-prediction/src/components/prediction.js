@@ -72,7 +72,7 @@ class Prediction extends Component {
     };
   }
 
-  //GET FETCH
+  //GET FETCH 10 DAYS PREDICTION
 
   fetchAPI = async () => {
     const controller = new AbortController();
@@ -82,7 +82,7 @@ class Prediction extends Component {
 
     console.log(controller);
     console.log(signal);
-    const url = `https://45.33.57.20:3000/r?startDate=${
+    const url = `https://45.33.57.20:8888/r?startDate=${
       this.state.startDate
     }&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
 
@@ -124,7 +124,6 @@ class Prediction extends Component {
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-    // console.log(this.state);
   };
   //INPUT VALIDATION LOGIC//
   inputValidation = () => {
