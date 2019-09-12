@@ -47,30 +47,23 @@ class Report extends Component {
           </tr>
           <tbody>
             {this.props.populate &&
-              this.props.reportDate.map(
-                (x, i) => (
-                  this.props.dateAddOne,
-                  (
-                    <tr key={i} className="report-row">
-                      <td>{this.props.reportDate[i]}</td>
-                      <td>
-                        {this.props.serverData.resultTable.predict14Days[i]}
-                      </td>
-                      <td>
-                        {this.props.serverData.resultTable.pred14DaysVolume[i]}
-                      </td>
-                      <td>
-                        {this.props.serverData.resultTable.pred14DaysEmbyro[i]}
-                      </td>
-                      <td>
-                        {
-                          this.props.serverData.resultTable.pred14DaysFirmness[
-                            i
-                          ]
-                        }
-                      </td>
-                    </tr>
-                  )
+              this.props.reportDate.map((x, i) =>
+                this.props.dateAddOne()(
+                  <tr key={i} className="report-row">
+                    <td>{this.props.reportDate[i]}</td>
+                    <td>
+                      {this.props.serverData.resultTable.predict14Days[i]}
+                    </td>
+                    <td>
+                      {this.props.serverData.resultTable.pred14DaysVolume[i]}
+                    </td>
+                    <td>
+                      {this.props.serverData.resultTable.pred14DaysEmbyro[i]}
+                    </td>
+                    <td>
+                      {this.props.serverData.resultTable.pred14DaysFirmness[i]}
+                    </td>
+                  </tr>
                 )
               )}
           </tbody>
