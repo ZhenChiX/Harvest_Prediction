@@ -35,7 +35,7 @@ const styles = {
     margin: 0,
     padding: "0 0 0 .5em",
     cursor: "pointer",
-    webkitAppearance: "menulist-button"
+    WebkitAppearance: "menulist-button"
   }
 };
 
@@ -80,7 +80,7 @@ class Prediction extends Component {
 
   // LOAD LOCATIONS FROM REST API
   fetchAPI_Stations = async () => {
-    const url = "https://45.33.57.20:8888/wudb";
+    const url = "https://pistachio.plantsciences.ucdavis.edu:8888/wudb";
     let response = await fetch(url);
     let returnAPI = await response.json();
     this.setState({
@@ -96,7 +96,7 @@ class Prediction extends Component {
 
     console.log(controller);
     console.log(signal);
-    const url = `https://45.33.57.20:8888/r?startDate=${this.state.startDate}&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
+    const url = `https://pistachio.plantsciences.ucdavis.edu:8888/r?startDate=${this.state.startDate}&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
 
     try {
       let response = await fetch(url, { signal });
