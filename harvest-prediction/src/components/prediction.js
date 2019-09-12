@@ -50,6 +50,7 @@ class Prediction extends Component {
       reportDate: [],
       notification: false,
       serverData: null,
+      stations: null,
       populate: false,
 
       errorValidation: {
@@ -72,8 +73,21 @@ class Prediction extends Component {
     };
   }
 
-  //GET FETCH 10 DAYS PREDICTION
+  // RENDER DROP DOWN LIST FOR LOCATION SELECT
+  componentDidMount() {
+    this.fetchAPI_Stations();
+  }
 
+  // LOAD LOCATIONS FROM REST API
+  fetchAPI_Stations = async () => {
+    const url = "https://45.33.57.20:8888/wudb";
+    let response = await fetch(url);
+    let returnAPI = await response.json();
+    this.setState({
+      stations: returnAPI
+    });
+  };
+  //GET FETCH 10 DAYS PREDICTION
   fetchAPI = async () => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -82,9 +96,7 @@ class Prediction extends Component {
 
     console.log(controller);
     console.log(signal);
-    const url = `https://45.33.57.20:8888/r?startDate=${
-      this.state.startDate
-    }&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
+    const url = `https://45.33.57.20:8888/r?startDate=${this.state.startDate}&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
 
     try {
       let response = await fetch(url, { signal });
@@ -263,27 +275,20 @@ class Prediction extends Component {
                 <option value="" hidden>
                   -- Select an option --
                 </option>
-                <option value="93234" text="93234 / Huron,CA">
-                  93234 / Huron,CA
-                </option>
-                <option value="93280" text="93280 / Wasco,CA">
-                  93280 / Wasco,CA
-                </option>
-                <option value="93640" text="93640 / Mendota,CA">
-                  93640 / Mendota,CA
-                </option>
-                <option value="93648" text="93648 / Parlier,CA">
-                  93648 / Parlier,CA
-                </option>
-                <option value="95912" text="95912 / Arbuckle,CA<">
-                  95912 / Arbuckle,CA
-                </option>
-                <option value="97124" text="97124 / Hillsboro,OR">
-                  97124 / Hillsboro,OR
-                </option>
+                {this.state.stations != undefined &&
+                  this.state.stations.map((x, i) => (
+                    <option
+                      key={i}
+                      value={x.zipcode}
+                      text={`${x.zipcode} / ${x.name}`}
+                    >
+                      {`${x.zipcode} / ${x.name}`}
+                    </option>
+                  ))}
               </select>
               <span style={styles.inputSpan}>Select a ZIP Code</span>
             </fieldset>
+
             {this.state.notification ? (
               <Notification
                 errorValidation={this.state.errorValidation}
