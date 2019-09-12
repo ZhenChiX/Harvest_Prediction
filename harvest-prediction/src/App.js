@@ -15,6 +15,7 @@ function App() {
           <img
             src="https://www.plantsciences.ucdavis.edu/themes/contrib/sitefarm_one/images/uc-logo-white.svg"
             className="Uc-logo"
+            alt="UC Davis_logo"
           />
         <Appbar />
         </div>

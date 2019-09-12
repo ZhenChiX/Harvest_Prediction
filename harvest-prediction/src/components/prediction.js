@@ -231,7 +231,6 @@ class Prediction extends Component {
             <fieldset style={styles.fieldset}>
               <legend style={styles.legend}>Start Date</legend>
               <TextField
-                type="sub"
                 name="startDate"
                 onChange={this.onChange}
                 type="date"
@@ -277,7 +276,7 @@ class Prediction extends Component {
                 <option value="" hidden>
                   -- Select an option --
                 </option>
-                {this.state.stations != undefined &&
+                {this.state.stations !== null &&
                   this.state.stations.map((x, i) => (
                     <option
                       key={i}
