@@ -96,7 +96,9 @@ class Prediction extends Component {
 
     console.log(controller);
     console.log(signal);
+
     const url = `https://45.33.57.20:8888/r?startDate=${this.state.startDate}&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
+
 
     try {
       let response = await fetch(url, { signal });
