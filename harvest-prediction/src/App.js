@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       <header>
         <div className="App-header">
-          <h2 className="App-title">Harvest Predition</h2>
+          <h2 className="App-title">Harvest Prediction</h2>
           <img
             src="https://www.plantsciences.ucdavis.edu/themes/contrib/sitefarm_one/images/uc-logo-white.svg"
             className="Uc-logo"

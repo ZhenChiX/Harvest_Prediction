@@ -5,12 +5,13 @@
   "dependencies": {
     "office-ui-fabric-react": "^7.25.0",
     "react": "^16.9.0",
+    "react-datepicker": "^2.9.6",
     "react-dom": "^16.9.0",
     "react-scripts": "^3.1.1",
     "recharts": "^1.7.1"
   },
   "scripts": {
-    "start": "HTTPS=true HOST=0.0.0.0 PORT=8889 react-scripts start",
+    "start": "PORT=8889 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

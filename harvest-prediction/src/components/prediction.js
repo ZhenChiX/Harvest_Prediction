@@ -1,8 +1,70 @@
 import React, { Component } from "react";
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
 import { TextField } from "office-ui-fabric-react/lib/TextField";
+import { Dropdown, IDropdownOption } from "office-ui-fabric-react/lib/Dropdown";
+import {
+  DatePicker,
+  DayOfWeek,
+  IDatePickerStrings
+} from "office-ui-fabric-react";
+// import "./DatePicker.Examples.scss";
 import Report from "./report";
 import Notification from "./notification";
+
+const DayPickerStrings = {
+  months: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ],
+
+  shortMonths: [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ],
+
+  days: [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ],
+
+  shortDays: ["S", "M", "T", "W", "T", "F", "S"],
+
+  goToToday: "Go to today",
+  prevMonthAriaLabel: "Go to previous month",
+  nextMonthAriaLabel: "Go to next month",
+  prevYearAriaLabel: "Go to previous year",
+  nextYearAriaLabel: "Go to next year",
+  closeButtonAriaLabel: "Close date picker",
+
+  isRequiredErrorMessage: "Start date is required.",
+
+  invalidInputErrorMessage: "Invalid date format."
+};
 
 const styles = {
   fieldset: {
@@ -45,6 +107,8 @@ class Prediction extends Component {
     this.myRef = React.createRef();
     this.state = {
       startDate: "",
+      startDateDemo: "",
+      endDateDemo: "",
       endDate: "",
       zipcode: "",
       reportDate: [],
@@ -83,9 +147,11 @@ class Prediction extends Component {
     const url = "https://pistachio.plantsciences.ucdavis.edu:8888/wudb";
     let response = await fetch(url);
     let returnAPI = await response.json();
-    this.setState({
-      stations: returnAPI
-    });
+    if (returnAPI) {
+      this.setState({
+        stations: returnAPI
+      });
+    }
   };
   //GET FETCH 10 DAYS PREDICTION
   fetchAPI = async () => {
@@ -134,8 +200,43 @@ class Prediction extends Component {
   //SMOOTH SCROLL TO ELEMENT//
   scrollToMyRef = () => window.scrollTo(0, this.myRef.current.offsetTop);
 
+  //COMPONENT ON CHANGE UPDATE
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    console.log(e.currentTarget.dataset);
+
+    this.setState({
+      [e.target.name]: e.target.value,
+      [e.currentTarget.attributes[0].value]: e.target.value
+    });
+
+    console.log(this.state);
+  };
+
+  // GET VALUE FROM DATEPICKER//
+
+  // onSelectDate = date => {
+  //   this.setState({ value: date });
+  // };
+
+  getStartDate = date => {
+    let formatDate = `${date.getFullYear()}-${date.getMonth() +
+      1}-${date.getDate()}`;
+    this.setState({ startDateDemo: date, startDate: formatDate });
+  };
+
+  getEndDate = date => {
+    let formatDate = `${date.getFullYear()}-${date.getMonth() +
+      1}-${date.getDate()}`;
+    this.setState({ endDateDemo: date, endDate: formatDate });
+  };
+
+  onFormatDate = date => {
+    let formatDate =
+      date.getMonth() + 1 + "-" + date.getDate() + "-" + date.getFullYear();
+    let startDateDemo =
+      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+
+    return `${date.getMonth() + 1} - ${date.getDate()} - ${date.getFullYear()}`;
   };
   //INPUT VALIDATION LOGIC//
   inputValidation = () => {
@@ -228,7 +329,7 @@ class Prediction extends Component {
           <form onSubmit={this.fetchResult}>
             <fieldset style={styles.fieldset}>
               <legend style={styles.legend}>Start Date</legend>
-              <TextField
+              {/* <TextField
                 name="startDate"
                 onChange={this.onChange}
                 type="date"
@@ -239,14 +340,24 @@ class Prediction extends Component {
                   iconName: "DateTime",
                   style: { color: "rgba(130,130,130)" }
                 }}
+              /> */}
+              <DatePicker
+                name="startDateDemo"
+                data-name="THIS IS MY NAME"
+                placeholder="Select a start date"
+                isRequired={true}
+                // allowTextInput={true}
+                strings={DayPickerStrings}
+                value={this.state.startDateDemo}
+                onSelectDate={this.getStartDate}
+                formatDate={this.onFormatDate}
               />
-
               <span style={styles.inputSpan}>Enter/Select a start date</span>
             </fieldset>
 
             <fieldset style={styles.fieldset}>
               <legend style={styles.legend}>End Date</legend>
-              <TextField
+              {/* <TextField
                 name="endDate"
                 onChange={this.onChange}
                 type="date"
@@ -257,8 +368,17 @@ class Prediction extends Component {
                   iconName: "DateTime",
                   style: { color: "rgba(130,130,130)" }
                 }}
+              /> */}
+              <DatePicker
+                name="endDateDemo"
+                placeholder="Select a end date"
+                isRequired={true}
+                // allowTextInput={true}
+                strings={DayPickerStrings}
+                value={this.state.endDateDemo}
+                onSelectDate={this.getEndDate}
+                formatDate={this.onFormatDate}
               />
-
               <span style={styles.inputSpan}>Enter/Select a end date</span>
             </fieldset>
 
@@ -268,7 +388,7 @@ class Prediction extends Component {
                 onChange={this.onChange}
                 name="zipcode"
                 style={styles.select}
-                selected
+                // selected
                 required
               >
                 <option value="" hidden>
