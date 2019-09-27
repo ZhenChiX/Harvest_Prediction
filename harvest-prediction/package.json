@@ -5,7 +5,7 @@
   "dependencies": {
     "office-ui-fabric-react": "^7.25.0",
     "react": "^16.9.0",
-    "react-datepicker": "^2.9.6",
+    "react-app-polyfill": "^1.0.3",
     "react-dom": "^16.9.0",
     "react-scripts": "^3.1.1",
     "recharts": "^1.7.1"
