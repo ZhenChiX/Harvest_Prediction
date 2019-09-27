@@ -1,13 +1,6 @@
 import React, { Component } from "react";
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
-import { TextField } from "office-ui-fabric-react/lib/TextField";
-import { Dropdown, IDropdownOption } from "office-ui-fabric-react/lib/Dropdown";
-import {
-  DatePicker,
-  DayOfWeek,
-  IDatePickerStrings
-} from "office-ui-fabric-react";
-// import "./DatePicker.Examples.scss";
+import { DatePicker } from "office-ui-fabric-react";
 import Report from "./report";
 import Notification from "./notification";
 
@@ -53,16 +46,13 @@ const DayPickerStrings = {
   ],
 
   shortDays: ["S", "M", "T", "W", "T", "F", "S"],
-
   goToToday: "Go to today",
   prevMonthAriaLabel: "Go to previous month",
   nextMonthAriaLabel: "Go to next month",
   prevYearAriaLabel: "Go to previous year",
   nextYearAriaLabel: "Go to next year",
   closeButtonAriaLabel: "Close date picker",
-
   isRequiredErrorMessage: "Start date is required.",
-
   invalidInputErrorMessage: "Invalid date format."
 };
 
@@ -107,15 +97,15 @@ class Prediction extends Component {
     this.myRef = React.createRef();
     this.state = {
       startDate: "",
+      endDate: "",
       startDateDemo: "",
       endDateDemo: "",
-      endDate: "",
       zipcode: "",
       reportDate: [],
       notification: false,
+      populate: false,
       serverData: null,
       stations: null,
-      populate: false,
 
       errorValidation: {
         errorMessageTitle: "Invalid Input",
@@ -158,7 +148,7 @@ class Prediction extends Component {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    setTimeout(() => controller.abort(), 3000);
+    setTimeout(() => controller.abort(), 5000);
 
     console.log(controller);
     console.log(signal);
@@ -202,40 +192,26 @@ class Prediction extends Component {
 
   //COMPONENT ON CHANGE UPDATE
   onChange = e => {
-    console.log(e.currentTarget.dataset);
-
     this.setState({
-      [e.target.name]: e.target.value,
-      [e.currentTarget.attributes[0].value]: e.target.value
+      [e.target.name]: e.target.value
     });
-
     console.log(this.state);
   };
-
-  // GET VALUE FROM DATEPICKER//
-
-  // onSelectDate = date => {
-  //   this.setState({ value: date });
-  // };
-
+  //STORE DATAPICKER DATE
   getStartDate = date => {
-    let formatDate = `${date.getFullYear()}-${date.getMonth() +
-      1}-${date.getDate()}`;
+    console.log(date);
+    let formatDate = `${date.getFullYear()}/${date.getMonth() +
+      1}/${date.getDate()}`;
     this.setState({ startDateDemo: date, startDate: formatDate });
   };
 
   getEndDate = date => {
-    let formatDate = `${date.getFullYear()}-${date.getMonth() +
-      1}-${date.getDate()}`;
+    let formatDate = `${date.getFullYear()}/${date.getMonth() +
+      1}/${date.getDate()}`;
     this.setState({ endDateDemo: date, endDate: formatDate });
   };
 
   onFormatDate = date => {
-    let formatDate =
-      date.getMonth() + 1 + "-" + date.getDate() + "-" + date.getFullYear();
-    let startDateDemo =
-      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-
     return `${date.getMonth() + 1} - ${date.getDate()} - ${date.getFullYear()}`;
   };
   //INPUT VALIDATION LOGIC//
@@ -267,10 +243,12 @@ class Prediction extends Component {
     this.inputValidation();
   };
 
-  //ADD ONE DAY TO PREDICTION DATE//
+  //STORE CONSECUTIVE PREDICTION DATE IN ARRAY//
   dateAddOne = () => {
     let tomorrow = new Date(this.state.endDate);
+    console.log(tomorrow);
     tomorrow.setDate(tomorrow.getDate() + 1);
+    console.log(tomorrow);
     let dateArray = [tomorrow.toLocaleDateString()];
     for (
       let i = 0;
@@ -329,18 +307,6 @@ class Prediction extends Component {
           <form onSubmit={this.fetchResult}>
             <fieldset style={styles.fieldset}>
               <legend style={styles.legend}>Start Date</legend>
-              {/* <TextField
-                name="startDate"
-                onChange={this.onChange}
-                type="date"
-                min="1900-01-01"
-                max="9999-12-31"
-                required
-                iconProps={{
-                  iconName: "DateTime",
-                  style: { color: "rgba(130,130,130)" }
-                }}
-              /> */}
               <DatePicker
                 name="startDateDemo"
                 data-name="THIS IS MY NAME"
@@ -357,18 +323,6 @@ class Prediction extends Component {
 
             <fieldset style={styles.fieldset}>
               <legend style={styles.legend}>End Date</legend>
-              {/* <TextField
-                name="endDate"
-                onChange={this.onChange}
-                type="date"
-                min="1900-01-01"
-                max="9999-12-31"
-                required
-                iconProps={{
-                  iconName: "DateTime",
-                  style: { color: "rgba(130,130,130)" }
-                }}
-              /> */}
               <DatePicker
                 name="endDateDemo"
                 placeholder="Select a end date"
@@ -388,7 +342,6 @@ class Prediction extends Component {
                 onChange={this.onChange}
                 name="zipcode"
                 style={styles.select}
-                // selected
                 required
               >
                 <option value="" hidden>
