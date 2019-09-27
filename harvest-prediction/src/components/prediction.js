@@ -150,7 +150,6 @@ class Prediction extends Component {
 
     setTimeout(() => controller.abort(), 5000);
 
-    console.log(controller);
     console.log(signal);
     const url = `https://pistachio.plantsciences.ucdavis.edu:8888/r?startDate=${this.state.startDate}&endDate=${this.state.endDate}&zipcode=${this.state.zipcode}`;
 
@@ -195,11 +194,9 @@ class Prediction extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
-    console.log(this.state);
   };
   //STORE DATAPICKER DATE
   getStartDate = date => {
-    console.log(date);
     let formatDate = `${date.getFullYear()}/${date.getMonth() +
       1}/${date.getDate()}`;
     this.setState({ startDateDemo: date, startDate: formatDate });
@@ -219,7 +216,6 @@ class Prediction extends Component {
     let endDate = new Date(this.state.endDate);
     let startDate = new Date(this.state.startDate);
     let daysGap = (endDate - startDate) / 86400000;
-    console.log(`Day's Gap: ${daysGap}`);
     this.setState({ daysGap: daysGap });
 
     if (daysGap < 0) {
@@ -246,9 +242,7 @@ class Prediction extends Component {
   //STORE CONSECUTIVE PREDICTION DATE IN ARRAY//
   dateAddOne = () => {
     let tomorrow = new Date(this.state.endDate);
-    console.log(tomorrow);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    console.log(tomorrow);
     let dateArray = [tomorrow.toLocaleDateString()];
     for (
       let i = 0;
