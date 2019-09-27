@@ -194,17 +194,18 @@ class Prediction extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+    console.log(this.state)
   };
   //STORE DATAPICKER DATE
   getStartDate = date => {
-    let formatDate = `${date.getFullYear()}/${date.getMonth() +
-      1}/${date.getDate()}`;
+    let formatDate = `${date.getFullYear()}-${date.getMonth() +
+      1}-${date.getDate()}`;
     this.setState({ startDateDemo: date, startDate: formatDate });
   };
 
   getEndDate = date => {
-    let formatDate = `${date.getFullYear()}/${date.getMonth() +
-      1}/${date.getDate()}`;
+    let formatDate = `${date.getFullYear()}-${date.getMonth() +
+      1}-${date.getDate()}`;
     this.setState({ endDateDemo: date, endDate: formatDate });
   };
 
@@ -239,9 +240,15 @@ class Prediction extends Component {
     this.inputValidation();
   };
 
+  // FORMAT DATE FROM API CALL //
+  formatDate = date => {
+    return date.replace(/[-]/g, "/");
+  };
+
   //STORE CONSECUTIVE PREDICTION DATE IN ARRAY//
   dateAddOne = () => {
-    let tomorrow = new Date(this.state.endDate);
+    let formatDate = this.formatDate(this.state.endDate);
+    let tomorrow = new Date(formatDate);
     tomorrow.setDate(tomorrow.getDate() + 1);
     let dateArray = [tomorrow.toLocaleDateString()];
     for (
@@ -257,14 +264,6 @@ class Prediction extends Component {
       });
     }
   };
-  // FORMAT DATE FROM API CALL //
-  formatDate = date => {
-    let newDateHead = date.replace(/[-/]/g, "").slice(4, 8);
-    let newDateEnd = date.replace(/[-/]/g, "").slice(0, 4);
-
-    this.setState({ formatDate: newDateHead + newDateEnd });
-  };
-
   // CLOSE NOTIFICATION
   closeNotification = () => {
     this.setState({ notification: false });
