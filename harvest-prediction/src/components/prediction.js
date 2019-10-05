@@ -98,8 +98,8 @@ class Prediction extends Component {
     this.state = {
       startDate: "",
       endDate: "",
-      startDateDemo: "",
-      endDateDemo: "",
+      startDateDemo: new Date(),
+      endDateDemo: new Date(),
       zipcode: "",
       reportDate: [],
       notification: false,
@@ -194,7 +194,6 @@ class Prediction extends Component {
     this.setState({
       [e.target.name]: e.target.value
     });
-    console.log(this.state)
   };
   //STORE DATAPICKER DATE
   getStartDate = date => {
@@ -220,11 +219,14 @@ class Prediction extends Component {
     this.setState({ daysGap: daysGap });
 
     if (daysGap < 0) {
+      console.log(this.state.endDate);
       this.setState({
         notification: true
       });
       console.log("not in range");
     } else {
+      console.log(this.state.endDate);
+
       this.fetchAPI().then(() => {
         if (this.state.populate === true) {
           this.dateAddOne();
@@ -302,7 +304,6 @@ class Prediction extends Component {
               <legend style={styles.legend}>Start Date</legend>
               <DatePicker
                 name="startDateDemo"
-                data-name="THIS IS MY NAME"
                 placeholder="Select a start date"
                 isRequired={true}
                 // allowTextInput={true}
@@ -362,6 +363,7 @@ class Prediction extends Component {
               />
             ) : null}
             <PrimaryButton type="submit">Predict</PrimaryButton>
+             
           </form>
         </div>
 
