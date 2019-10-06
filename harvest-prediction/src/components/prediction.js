@@ -96,8 +96,8 @@ class Prediction extends Component {
     super(props);
     this.myRef = React.createRef();
     this.state = {
-      startDate: "",
-      endDate: "",
+      startDate: new Date().toLocaleDateString(),
+      endDate: new Date().toLocaleDateString(),
       startDateDemo: new Date(),
       endDateDemo: new Date(),
       zipcode: "",
