@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { PrimaryButton } from "office-ui-fabric-react/lib/Button";
-import { DatePicker } from "office-ui-fabric-react";
+import { DatePicker, TextField } from "office-ui-fabric-react";
 import Report from "./report";
 import Notification from "./notification";
 
@@ -52,7 +52,6 @@ const DayPickerStrings = {
   prevYearAriaLabel: "Go to previous year",
   nextYearAriaLabel: "Go to next year",
   closeButtonAriaLabel: "Close date picker",
-  isRequiredErrorMessage: "Start date is required.",
   invalidInputErrorMessage: "Invalid date format."
 };
 
@@ -96,10 +95,10 @@ class Prediction extends Component {
     super(props);
     this.myRef = React.createRef();
     this.state = {
-      startDate: new Date().toLocaleDateString(),
-      endDate: new Date().toLocaleDateString(),
-      startDateDemo: new Date(),
-      endDateDemo: new Date(),
+      startDate: null,
+      endDate: null,
+      startDateDemo: null,
+      endDateDemo: null,
       zipcode: "",
       reportDate: [],
       notification: false,
@@ -239,7 +238,13 @@ class Prediction extends Component {
   // ONE BUTTON TO RULE THEM ALL //
   fetchResult = e => {
     e.preventDefault();
-    this.inputValidation();
+    if (this.state.startDate === null || this.state.endDate === null) {
+      this.setState({
+        notification: true
+      });
+    } else {
+      this.inputValidation();
+    }
   };
 
   // FORMAT DATE FROM API CALL //
@@ -336,7 +341,6 @@ class Prediction extends Component {
                 onChange={this.onChange}
                 name="zipcode"
                 style={styles.select}
-                required
               >
                 <option value="" hidden>
                   -- Select an option --
@@ -363,7 +367,6 @@ class Prediction extends Component {
               />
             ) : null}
             <PrimaryButton type="submit">Predict</PrimaryButton>
-             
           </form>
         </div>
 
