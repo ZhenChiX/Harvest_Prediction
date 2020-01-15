@@ -256,7 +256,9 @@ class Prediction extends Component {
   dateAddOne = () => {
     let formatDate = this.formatDate(this.state.endDate);
     let tomorrow = new Date(formatDate);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    // tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setDate(tomorrow.getDate());
+
     let dateArray = [tomorrow.toLocaleDateString()];
     for (
       let i = 0;
@@ -338,6 +340,7 @@ class Prediction extends Component {
             <fieldset style={styles.fieldset}>
               <legend style={styles.legend}>ZIP Code</legend>
               <select
+                required
                 onChange={this.onChange}
                 name="zipcode"
                 style={styles.select}
